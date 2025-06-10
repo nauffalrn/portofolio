@@ -191,7 +191,7 @@ function App() {
                 Technical Skills
               </h3>
               <ul className="list-disc pl-5 text-sm space-y-1">
-                <li>Frontend: React, Tailwind CSS, Bootstrap, JQuery</li>
+                <li>Frontend: HTML, CSS, Javascript, Tailwind CSS, Bootstrap, JQuery</li>
                 <li>Backend: Java Spring Boot, PHP, Laravel</li>
                 <li>Database: MySQL</li>
                 <li>Tools: Git, Docker</li>
