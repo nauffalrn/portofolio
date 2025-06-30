@@ -11,6 +11,7 @@ export default Image;
 import Proyek1 from "./assets/proyek/Lapangin.jpg";
 import Proyek2 from "./assets/proyek/Lapangin-mobile.jpg";
 import Proyek3 from "./assets/proyek/SocialNews.jpg";
+import Proyek4 from "./assets/proyek/n-shop.jpg";
 
 import Sertifikat1 from "./assets/sertifikat/Belajar Dasar Pemrograman JavaScript - Dicoding.jpg";
 import Sertifikat2 from "./assets/sertifikat/Intro to Software Engineering.jpg";
@@ -45,6 +46,14 @@ export const listProyek = [
     desk: "Platform berita sosial yang memungkinkan pengguna untuk membaca, dan mendiskusikan berita terkini. Dilengkapi dengan sistem komentar, like, dan kategori berita yang terorganisir.",
     tools: ["HTML", "CSS", "Javascript", "PHP", "MySQL"],
     dad: "400",
+  },
+  {
+    id: 4, 
+    gambar: Proyek4,
+    nama: "N-Shop",
+    desk: "Platform e-commerce yang memungkinkan pengguna untuk berbelanja online dengan mudah dan aman. Dilengkapi dengan fitur pencarian produk, keranjang belanja, wishlist, perhitungan ongkir dan berbagai fitur lain yang membantu pengguna dalam berbelanja.",
+    tools: ["Laravel", "HTML", "Javascript", "Bootstrap", "MySQL"],
+    dad: "500",
   },
 ];
 
