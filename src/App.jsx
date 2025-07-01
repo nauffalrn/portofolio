@@ -168,10 +168,10 @@ function App() {
               </p>
               <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4 flex-wrap">
                 <span className="bg-amber-900/40 text-amber-200 px-3 py-1 rounded-md text-xs font-medium">
-                  6th Semester
+                  7th Semester
                 </span>
                 <span className="bg-amber-900/40 text-amber-200 px-3 py-1 rounded-md text-xs font-medium">
-                  GPA 3.9/4.0
+                  GPA 3.89/4.0
                 </span>
               </div>
             </div>
