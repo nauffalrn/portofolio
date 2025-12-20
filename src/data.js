@@ -1,4 +1,4 @@
-import HeroImage from "./assets/nauffal.jpg";
+import HeroImage from "./assets/nauffal.png";
 import TelkomLogo from "./assets/telkom-university-logo.png";
 
 const Image = {

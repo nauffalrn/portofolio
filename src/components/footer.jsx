@@ -18,7 +18,7 @@ const Footer = () => {
             <div className="flex items-center gap-4 sm:gap-6 mb-4">
               <a
                 href="http://www.linkedin.com/in/mnauffalr"
-                className="text-zinc-400 hover:text-amber-200 transition-colors"
+                className="text-zinc-400 hover:text-blue-200 transition-colors"
                 aria-label="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -27,7 +27,7 @@ const Footer = () => {
               </a>
               <a
                 href="https://github.com/nauffalrn"
-                className="text-zinc-400 hover:text-amber-200 transition-colors"
+                className="text-zinc-400 hover:text-blue-200 transition-colors"
                 aria-label="GitHub"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -36,7 +36,7 @@ const Footer = () => {
               </a>
               <a
                 href="https://www.instagram.com/nauffal.rn"
-                className="text-zinc-400 hover:text-amber-200 transition-colors"
+                className="text-zinc-400 hover:text-blue-200 transition-colors"
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -45,7 +45,7 @@ const Footer = () => {
               </a>
               <a
                 href="mailto:m.nauffal.ramdhani@gmail.com"
-                className="text-zinc-400 hover:text-amber-200 transition-colors"
+                className="text-zinc-400 hover:text-blue-200 transition-colors"
                 aria-label="Email"
               >
                 <i className="ri-mail-fill text-xl sm:text-2xl"></i>
