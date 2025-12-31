@@ -28,6 +28,24 @@ const Navbar = () => {
     setMobileMenuOpen(false);
   };
 
+  // Fungsi untuk smooth scroll dengan offset
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      const navbarHeight = 100; // Tinggi navbar + padding
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+    closeMobileMenu();
+  };
+
   return (
     <nav
       className={`navbar py-4 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -48,6 +66,7 @@ const Navbar = () => {
           <li>
             <a
               href="#home"
+              onClick={(e) => handleNavClick(e, "home")}
               className="text-base lg:text-lg font-medium hover:text-blue-200 transition-colors"
             >
               Home
@@ -56,6 +75,7 @@ const Navbar = () => {
           <li>
             <a
               href="#about"
+              onClick={(e) => handleNavClick(e, "about")}
               className="text-base lg:text-lg font-medium hover:text-blue-200 transition-colors"
             >
               About
@@ -63,7 +83,17 @@ const Navbar = () => {
           </li>
           <li>
             <a
+              href="#experience"
+              onClick={(e) => handleNavClick(e, "experience")}
+              className="text-base lg:text-lg font-medium hover:text-blue-200 transition-colors"
+            >
+              Experience
+            </a>
+          </li>
+          <li>
+            <a
               href="#project"
+              onClick={(e) => handleNavClick(e, "project")}
               className="text-base lg:text-lg font-medium hover:text-blue-200 transition-colors"
             >
               Project
@@ -72,6 +102,7 @@ const Navbar = () => {
           <li>
             <a
               href="#achievement"
+              onClick={(e) => handleNavClick(e, "achievement")}
               className="text-base lg:text-lg font-medium hover:text-blue-200 transition-colors"
             >
               Achievement
@@ -80,6 +111,7 @@ const Navbar = () => {
           <li>
             <a
               href="#contact"
+              onClick={(e) => handleNavClick(e, "contact")}
               className="text-base lg:text-lg font-medium hover:text-blue-200 transition-colors"
             >
               Contact
@@ -103,8 +135,8 @@ const Navbar = () => {
               <li>
                 <a
                   href="#home"
+                  onClick={(e) => handleNavClick(e, "home")}
                   className="text-lg font-medium hover:text-blue-200 transition-colors"
-                  onClick={closeMobileMenu}
                 >
                   Home
                 </a>
@@ -112,17 +144,26 @@ const Navbar = () => {
               <li>
                 <a
                   href="#about"
+                  onClick={(e) => handleNavClick(e, "about")}
                   className="text-lg font-medium hover:text-blue-200 transition-colors"
-                  onClick={closeMobileMenu}
                 >
                   About
                 </a>
               </li>
               <li>
                 <a
-                  href="#project"
+                  href="#experience"
+                  onClick={(e) => handleNavClick(e, "experience")}
                   className="text-lg font-medium hover:text-blue-200 transition-colors"
-                  onClick={closeMobileMenu}
+                >
+                  Experience
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#project"
+                  onClick={(e) => handleNavClick(e, "project")}
+                  className="text-lg font-medium hover:text-blue-200 transition-colors"
                 >
                   Project
                 </a>
@@ -130,8 +171,8 @@ const Navbar = () => {
               <li>
                 <a
                   href="#achievement"
+                  onClick={(e) => handleNavClick(e, "achievement")}
                   className="text-lg font-medium hover:text-blue-200 transition-colors"
-                  onClick={closeMobileMenu}
                 >
                   Achievement
                 </a>
@@ -139,8 +180,8 @@ const Navbar = () => {
               <li>
                 <a
                   href="#contact"
+                  onClick={(e) => handleNavClick(e, "contact")}
                   className="text-lg font-medium hover:text-blue-200 transition-colors"
-                  onClick={closeMobileMenu}
                 >
                   Contact
                 </a>

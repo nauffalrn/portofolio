@@ -10,7 +10,7 @@ const Footer = () => {
               Muhammad Nauffal Ramdhani
             </h2>
             <p className="text-zinc-400 text-sm sm:text-base">
-              Fullstack Developer | Student at Telkom University
+              Backend Developer | Student at Telkom University
             </p>
           </div>
 
