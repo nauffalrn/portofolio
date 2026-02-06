@@ -21,6 +21,7 @@ import Proyek3 from "./assets/proyek/SocialNews.jpg";
 import Proyek4 from "./assets/proyek/n-shop.jpg";
 import Proyek5 from "./assets/proyek/SocialMedia.jpg";
 import Proyek6 from "./assets/proyek/TaskManagement.jpg";
+import Proyek7 from "./assets/proyek/QR-feedback-system.jpg";
 
 import Sertifikat1 from "./assets/sertifikat/Belajar Dasar Pemrograman JavaScript - Dicoding.jpg";
 import Sertifikat2 from "./assets/sertifikat/Intro to Software Engineering.jpg";
@@ -65,21 +66,45 @@ export const listProyek = [
     dad: "500",
   },
   {
-  id: 5,
-  gambar: Proyek5,
-  nama: "Social Media API",
-  desk: "A comprehensive social media backend API built with NestJS and PostgreSQL. Features include user authentication, posts with image uploads, comments, replies, likes, follow/unfollow system, real-time notifications, and full RESTful API documentation with Swagger.",
-  tools: ["NestJS", "TypeScript", "PostgreSQL", "Drizzle ORM", "Fastify", "Swagger", "JWT", "Cloudinary"],
-  dad: "600",
+    id: 5,
+    gambar: Proyek5,
+    nama: "Social Media API",
+    desk: "A comprehensive social media backend API built with NestJS and PostgreSQL. Features include user authentication, posts with image uploads, comments, replies, likes, follow/unfollow system, real-time notifications, and full RESTful API documentation with Swagger.",
+    tools: [
+      "NestJS",
+      "TypeScript",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "Fastify",
+      "Swagger",
+      "JWT",
+      "Cloudinary",
+    ],
+    dad: "600",
   },
   {
-  id: 6,
-  gambar: Proyek6,
-  nama: "Task Management API",
-  desk: "A comprehensive task management backend API built with Express.js and PostgreSQL. Features include workspace management, task assignments with file attachments, role-based access control, activity logging, comments system, team collaboration, and complete RESTful API documentation with Swagger.",
-  tools: ["Express.js", "PostgreSQL", "Drizzle ORM", "JWT", "Swagger"],
-  dad: "700",
-}
+    id: 6,
+    gambar: Proyek6,
+    nama: "Task Management API",
+    desk: "A comprehensive task management backend API built with Express.js and PostgreSQL. Features include workspace management, task assignments with file attachments, role-based access control, activity logging, comments system, team collaboration, and complete RESTful API documentation with Swagger.",
+    tools: ["Express.js", "PostgreSQL", "Drizzle ORM", "JWT", "Swagger"],
+    dad: "600",
+  },
+  {
+    id: 7,
+    gambar: Proyek7,
+    nama: "QR Feedback System",
+    desk: "A real-time complaint management system for mall toilet facilities. Customers scan QR codes at each toilet location to submit complaints, which are automatically routed to the appropriate WhatsApp group (Cleanliness or Infrastructure) based on the category selected. Built with Express.js backend and WhatsApp Web.js integration for instant notifications.",
+    tools: [
+      "Express.js",
+      "WhatsApp Web.js",
+      "Node.js",
+      "HTML",
+      "Bootstrap",
+      "JavaScript",
+    ],
+    dad: "700",
+  },
 ];
 
 export const listExperience = [

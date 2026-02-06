@@ -189,7 +189,7 @@ function App() {
               </p>
               <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4 flex-wrap">
                 <span className="bg-blue-900/40 text-blue-200 px-3 py-1 rounded-md text-xs font-medium">
-                  7th Semester
+                  8th Semester
                 </span>
                 <span className="bg-blue-900/40 text-blue-200 px-3 py-1 rounded-md text-xs font-medium">
                   GPA 3.89/4.0
