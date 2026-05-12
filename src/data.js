@@ -2,7 +2,6 @@ import HeroImage from "./assets/nauffal.png";
 import TelkomLogo from "./assets/telkom-university-logo.png";
 import GhaniLogo from "./assets/ghani-logo.png";
 
-// Import foto experience dengan path yang benar
 import GhaniPhoto1 from "./assets/experience/Sertifikat-Magang.jpg";
 import GhaniPhoto2 from "./assets/experience/ghani-team.jpg";
 import GhaniPhoto3 from "./assets/experience/documentation-testing.png";
@@ -23,6 +22,7 @@ import Proyek5 from "./assets/proyek/SocialMedia.jpg";
 import Proyek6 from "./assets/proyek/TaskManagement.jpg";
 import Proyek7 from "./assets/proyek/QR-feedback-system.jpg";
 import Proyek8 from "./assets/proyek/JobMatching.jpg";
+import Proyek9 from "./assets/proyek/JagoMat.jpg";
 
 import Sertifikat1 from "./assets/sertifikat/Belajar Dasar Pemrograman JavaScript - Dicoding.jpg";
 import Sertifikat2 from "./assets/sertifikat/Intro to Software Engineering.jpg";
@@ -32,6 +32,7 @@ import Sertifikat5 from "./assets/sertifikat/Sertifikat Fundamental Front-End We
 import Sertifikat6 from "./assets/sertifikat/Sertifikat Fundamental Front-End Web Development II.jpg";
 import Sertifikat7 from "./assets/sertifikat/Sertifikat Mahir Membuat Website dengan Laravel 9.jpg";
 import Sertifikat8 from "./assets/sertifikat/Preparation Course for Azure AI Fundamentals (AI-900).jpg";
+import Sertifikat9 from "./assets/sertifikat/Olimpina-Informatika.png";
 
 export const listProyek = [
   {
@@ -107,22 +108,40 @@ export const listProyek = [
     dad: "700",
   },
   {
-  id: 8,
-  gambar: Proyek8,
-  nama: "Job Matching",
-  desk: "An AI-powered job matching platform that automatically matches customer CVs with relevant job opportunities using intelligent skill detection and matching algorithms. The system extracts skills from PDF CVs, analyzes candidate profiles, and provides personalized job recommendations ranked by compatibility score with real-time matching calculations and admin dashboard.",
-  tools: [
-    "Node.js",
-    "Fastify",
-    "PostgreSQL",
-    "Supabase",
-    "JWT Authentication",
-    "RESTful API",
-    "React.js",
-    "PDF.js",
-  ],
-  dad: "800",
-}
+    id: 8,
+    gambar: Proyek8,
+    nama: "Job Matching",
+    desk: "An AI-powered job matching platform that automatically matches customer CVs with relevant job opportunities using intelligent skill detection and matching algorithms. The system extracts skills from PDF CVs, analyzes candidate profiles, and provides personalized job recommendations ranked by compatibility score with real-time matching calculations and admin dashboard.",
+    tools: [
+      "Node.js",
+      "Fastify",
+      "PostgreSQL",
+      "Supabase",
+      "JWT Authentication",
+      "RESTful API",
+      "React.js",
+      "PDF.js",
+    ],
+    dad: "800",
+  },
+  {
+    id: 9,
+    gambar: Proyek9,
+    nama: "JagoMat",
+    desk: "A comprehensive mathematics learning and practice application designed for students to master mathematical concepts through interactive materials and structured quizzes. The platform features organized learning materials by topics with detailed explanations and examples, level-based quizzes with immediate answer feedback, achievement badges upon quiz completion, and real-time quiz attempt tracking. Students can learn at their own pace, take multiple quizzes per topic, and review their quiz answers with detailed explanations to improve their understanding of mathematical concepts.",
+    tools: [
+      "Express.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Supabase",
+      "JWT Authentication",
+      "RESTful API",
+      "React Native",
+      "Expo",
+      "Axios",
+    ],
+    dad: "900",
+  },
 ];
 
 export const listExperience = [
@@ -199,5 +218,10 @@ export const listSertifikat = [
     id: 8,
     gambar: Sertifikat8,
     nama: "Preparation Course for Azure AI Fundamentals (AI-900)",
+  },
+  {
+    id: 9,
+    gambar: Sertifikat9,
+    nama: "Olimpina Bidang Informatika untuk Mahasiswa",
   },
 ];
