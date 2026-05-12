@@ -96,7 +96,7 @@ function App() {
         "service_47vsons",
         "template_ptdk3yw",
         formRef.current,
-        "oGG4FyUBPhabbQOhZ"
+        "oGG4FyUBPhabbQOhZ",
       )
       .then((result) => {
         console.log("SUCCESS!", result.text);
@@ -219,7 +219,8 @@ function App() {
                   JQuery
                 </li>
                 <li>
-                  Backend: Java Spring Boot, PHP, Laravel, NestJS, Express js
+                  Backend: Java Spring Boot, PHP, Laravel, NestJS, Express js,
+                  Redis
                 </li>
                 <li>Database: MySQL, PostgreSQL</li>
                 <li>Tools: Git</li>

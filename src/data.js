@@ -22,6 +22,7 @@ import Proyek4 from "./assets/proyek/n-shop.jpg";
 import Proyek5 from "./assets/proyek/SocialMedia.jpg";
 import Proyek6 from "./assets/proyek/TaskManagement.jpg";
 import Proyek7 from "./assets/proyek/QR-feedback-system.jpg";
+import Proyek8 from "./assets/proyek/JobMatching.jpg";
 
 import Sertifikat1 from "./assets/sertifikat/Belajar Dasar Pemrograman JavaScript - Dicoding.jpg";
 import Sertifikat2 from "./assets/sertifikat/Intro to Software Engineering.jpg";
@@ -105,6 +106,23 @@ export const listProyek = [
     ],
     dad: "700",
   },
+  {
+  id: 8,
+  gambar: Proyek8,
+  nama: "Job Matching",
+  desk: "An AI-powered job matching platform that automatically matches customer CVs with relevant job opportunities using intelligent skill detection and matching algorithms. The system extracts skills from PDF CVs, analyzes candidate profiles, and provides personalized job recommendations ranked by compatibility score with real-time matching calculations and admin dashboard.",
+  tools: [
+    "Node.js",
+    "Fastify",
+    "PostgreSQL",
+    "Supabase",
+    "JWT Authentication",
+    "RESTful API",
+    "React.js",
+    "PDF.js",
+  ],
+  dad: "800",
+}
 ];
 
 export const listExperience = [
