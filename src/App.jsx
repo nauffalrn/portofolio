@@ -12,8 +12,13 @@ function App() {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedExperiencePhoto, setSelectedExperiencePhoto] = useState(null);
+  const [showAllProjects, setShowAllProjects] = useState(false);
 
   const texts = ["Backend Developer"];
+  const sortedProjects = [...listProyek].sort((a, b) => b.id - a.id);
+  const visibleProjects = showAllProjects
+    ? sortedProjects
+    : sortedProjects.slice(0, 6);
 
   useEffect(() => {
     const typeSpeed = isDeleting ? 50 : 100;
@@ -223,7 +228,8 @@ function App() {
                   Redis
                 </li>
                 <li>Database: MySQL, PostgreSQL</li>
-                <li>Tools: Git</li>
+                <li>Testing: Unit Testing, Katalon</li>
+                <li>Version Control: Git, GitHub</li>
               </ul>
             </div>
             <div className="bg-zinc-700/50 p-4 rounded-lg">
@@ -249,28 +255,26 @@ function App() {
         >
           Experience
         </h1>
-        <div className="experience-box mt-14 max-w-4xl mx-auto space-y-6">
+        <div className="experience-box mt-14 grid md:grid-cols-2 grid-cols-1 gap-6 max-w-7xl mx-auto">
           {listExperience.map((exp) => (
             <div
               key={exp.id}
-              className="bg-zinc-800 rounded-lg p-6 hover:bg-zinc-700 transition-all duration-300"
+              className="bg-zinc-800 rounded-lg p-6 hover:bg-zinc-700 transition-all duration-300 h-full"
               data-aos="fade-up"
               data-aos-duration="1000"
               data-aos-delay={exp.dad}
               data-aos-once="true"
             >
               <div className="flex flex-col sm:flex-row gap-4">
-                {/* Company Logo */}
-                <div className="w-16 h-16 flex-shrink-0 bg-white rounded-lg p-2 flex items-center justify-center">
+                <div className="w-16 h-16 flex-shrink-0 overflow-hidden rounded-lg">
                   <img
                     src={exp.logo}
                     alt={exp.company}
-                    className="max-w-full max-h-full object-contain"
+                    className="w-full h-full object-contain block"
                     loading="lazy"
                   />
                 </div>
 
-                {/* Experience Details */}
                 <div className="flex-1">
                   <h2 className="text-xl sm:text-2xl font-bold mb-1">
                     {exp.position}
@@ -281,7 +285,6 @@ function App() {
                   <p className="text-sm text-zinc-400 mb-1">{exp.duration}</p>
                   <p className="text-sm text-zinc-400 mb-4">{exp.location}</p>
 
-                  {/* Description */}
                   <ul className="list-disc list-inside space-y-2 mb-4 text-zinc-300 text-sm sm:text-base">
                     {exp.description.map((desc, index) => (
                       <li key={index} className="leading-relaxed">
@@ -290,7 +293,6 @@ function App() {
                     ))}
                   </ul>
 
-                  {/* Skills */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {exp.skills.map((skill, index) => (
                       <span
@@ -302,14 +304,13 @@ function App() {
                     ))}
                   </div>
 
-                  {/* Photos Gallery */}
                   {exp.photos && exp.photos.length > 0 && (
                     <div className="mt-6">
                       <h4 className="text-lg font-semibold mb-3 text-blue-200">
                         <i className="ri-image-line mr-2"></i>
                         Documentation
                       </h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {exp.photos.map((photo, index) => (
                           <div
                             key={index}
@@ -325,11 +326,9 @@ function App() {
                               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                               loading="lazy"
                             />
-                            {/* Overlay yang muncul saat hover */}
                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                               <i className="ri-zoom-in-line text-white text-2xl"></i>
                             </div>
-                            {/* Caption selalu terlihat di bawah */}
                             {photo.caption && (
                               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-2">
                                 <p className="text-white text-xs text-center font-medium">
@@ -360,19 +359,17 @@ function App() {
           Project
         </h1>
         <div className="proyek-box mt-14 grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 max-w-7xl mx-auto">
-          {listProyek.map((proyek) => (
+          {visibleProjects.map((proyek) => (
             <div
               key={proyek.id}
-              className="bg-zinc-800 rounded-md hover:bg-zinc-700 transition-all duration-300 overflow-hidden hover:scale-105"
+              className="bg-zinc-800 rounded-md hover:bg-zinc-700 transition-all duration-300 overflow-hidden hover:scale-105 cursor-pointer"
               data-aos="fade-up"
               data-aos-duration="1000"
               data-aos-delay={proyek.dad}
               data-aos-once="true"
+              onClick={() => openProjectModal(proyek)}
             >
-              <div
-                className="w-full overflow-hidden cursor-pointer group relative"
-                onClick={() => openProjectModal(proyek)}
-              >
+              <div className="w-full overflow-hidden group relative">
                 <img
                   src={proyek.gambar}
                   alt={`${proyek.nama} Project Image`}
@@ -389,9 +386,6 @@ function App() {
                 <h2 className="text-xl sm:text-2xl font-bold my-4">
                   {proyek.nama}
                 </h2>
-                <p className="text-base/loose mb-4 text-zinc-300">
-                  {proyek.desk}
-                </p>
                 <div className="flex flex-wrap gap-2">
                   {proyek.tools.map((tool, index) => (
                     <span
@@ -406,6 +400,17 @@ function App() {
             </div>
           ))}
         </div>
+
+        {listProyek.length > 6 && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => setShowAllProjects((prev) => !prev)}
+              className="bg-zinc-700 hover:bg-zinc-600 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-300"
+            >
+              {showAllProjects ? "Show Less" : "More Projects"}
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Achievement Section */}
@@ -457,9 +462,9 @@ function App() {
             >
               <i className="ri-close-line text-xl"></i>
             </button>
-            <div className="bg-white rounded-lg overflow-hidden">
+            <div className="bg-zinc-800 rounded-lg overflow-hidden border border-zinc-700">
               <div className="p-4 sm:p-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 pr-16">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 pr-16">
                   {selectedProyek.nama}
                 </h2>
                 <div className="mb-4">
@@ -469,16 +474,16 @@ function App() {
                     className="w-full h-auto object-contain rounded-lg max-h-[60vh]"
                   />
                 </div>
-                <div className="text-gray-700">
+                <div className="text-zinc-200">
                   <p className="mb-4 leading-relaxed">{selectedProyek.desk}</p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="text-sm font-semibold text-gray-600 mr-2">
+                    <span className="text-sm font-semibold text-zinc-300 mr-2">
                       Tech Stack:
                     </span>
                     {selectedProyek.tools.map((tool, index) => (
                       <span
                         key={index}
-                        className="py-1 px-3 bg-blue-100 text-blue-800 rounded-md font-semibold text-sm border border-blue-200"
+                        className="py-1 px-3 bg-blue-900/40 text-blue-200 rounded-md font-semibold text-sm border border-blue-700/40"
                       >
                         {tool}
                       </span>
@@ -494,7 +499,7 @@ function App() {
       {/* Modal untuk sertifikat */}
       {selectedSertifikat && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-auto relative w-full mx-4">
+          <div className="bg-zinc-800 rounded-lg max-w-4xl max-h-[90vh] overflow-auto relative w-full mx-4 border border-zinc-700">
             <button
               onClick={closeModal}
               className="absolute top-4 right-4 bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 z-10 transition-colors"
@@ -503,13 +508,13 @@ function App() {
               <i className="ri-close-line text-lg"></i>
             </button>
             <div className="p-4 sm:p-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 pr-12">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 pr-12">
                 {selectedSertifikat.nama}
               </h2>
               <img
                 src={selectedSertifikat.gambar}
                 alt={selectedSertifikat.nama}
-                className="w-full max-w-full h-auto object-contain rounded-lg"
+                className="w-full max-w-full h-auto object-contain rounded-lg bg-zinc-900 p-2"
               />
             </div>
           </div>
