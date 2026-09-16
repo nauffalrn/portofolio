@@ -231,8 +231,8 @@ export const listExperience = [
     company: "Rimbaloka Trip",
     position: "Trip Operations & Social Media Admin",
     type: "Full-time",
-    duration: "Oct 2025 - Present",
-    location: "Kota Bandung, West Java, Indonesia · Online",
+    duration: "Oct 2025 - Aug 2026",
+    location: "Kota Bandung, West Java, Indonesia · Hybrid",
     description: [
       "Managed participant registration and trip administration using Google Forms and spreadsheets.",
       "Handled customer inquiries and participant communication through social media and messaging platforms.",

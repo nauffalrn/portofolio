@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import DataImage from "./data";
 import { listProyek, listSertifikat, listExperience } from "./data";
-import emailjs from "@emailjs/browser";
 import ProfileCard from "./components/profile Card/profileCard";
 
 function App() {
@@ -74,51 +73,6 @@ function App() {
     document.body.style.overflow = "unset";
   };
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
-  const formRef = useRef();
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Handler untuk submit form
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    emailjs
-      .sendForm(
-        "service_47vsons",
-        "template_ptdk3yw",
-        formRef.current,
-        "oGG4FyUBPhabbQOhZ",
-      )
-      .then((result) => {
-        console.log("SUCCESS!", result.text);
-        setSubmitStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setSubmitStatus(null), 5000);
-      })
-      .catch((error) => {
-        console.log("FAILED...", error);
-        setSubmitStatus("error");
-        setTimeout(() => setSubmitStatus(null), 5000);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  };
-
   return (
     <>
       {/* Hero Section */}
@@ -135,17 +89,6 @@ function App() {
               {typedText}
               <span className="animate-pulse text-blue-200">|</span>
             </span>
-          </div>
-          <div className="flex items-center justify-center lg:justify-start sm:gap-4 gap-2">
-            <a
-              href="/cv/CV Muhammad Nauffal Ramdhani.pdf"
-              download="CV Muhammad Nauffal Ramdhani.pdf"
-              className="bg-blue-600 text-white p-3 sm:p-4 rounded-2xl hover:bg-blue-700 transition-colors duration-300 font-semibold text-sm sm:text-base"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Download CV <i className="ri-download-line ri-lg"></i>
-            </a>
           </div>
         </div>
         <div className="flex justify-center lg:justify-end order-1 lg:order-2 lg:-ml-16 xl:-ml-24">
@@ -194,38 +137,45 @@ function App() {
               </p>
               <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4 flex-wrap">
                 <span className="bg-blue-900/40 text-blue-200 px-3 py-1 rounded-md text-xs font-medium">
-                  8th Semester
+                  GPA 3.9/4.0
                 </span>
                 <span className="bg-blue-900/40 text-blue-200 px-3 py-1 rounded-md text-xs font-medium">
-                  GPA 3.89/4.0
+                  Cum Laude
                 </span>
               </div>
             </div>
           </div>
 
-          <p className="text-base/loose mb-8 text-center sm:text-left">
-            I am an Informatics student at Telkom University with a strong
-            interest in Backend Development. Throughout my academic journey, I
-            have been actively involved in collaborative projects, where I
-            developed solid problem-solving skills and experience in building
-            reliable and efficient server-side systems.I enjoy working with
-            databases, APIs, and application logic, and have a strong foundation
-            in coding, logical thinking, and system design. I am always eager to
-            learn new technologies and continuously improve my technical skills
-            to create scalable, high-quality software solutions.
-          </p>
+          <div className="text-base/loose mb-8 text-center sm:text-left space-y-4">
+            <p>
+              I am an Informatics graduate from Telkom University with a strong
+              interest in Backend Development. I approach software development
+              by first understanding problems, analyzing requirements, and
+              choosing the most appropriate solutions before turning them into
+              reliable and efficient code.
+            </p>
+            <p>
+              I have experience working with databases, APIs, application logic,
+              and system design, with a strong focus on data security,
+              scalability, maintainability, readability, and reliability. I
+              apply principles such as SOLID, DRY, KISS, and YAGNI to build
+              clean, well-structured, and maintainable software. Beyond coding,
+              I enjoy solving problems, exploring different approaches, and
+              continuously learning to deliver high-quality software solutions.
+            </p>
+          </div>
 
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-5">
             <div className="bg-zinc-700/50 p-4 rounded-lg">
               <h3 className="font-bold text-blue-200 mb-2">Technical Skills</h3>
               <ul className="list-disc pl-5 text-sm space-y-1">
                 <li>
-                  Frontend: HTML, CSS, Javascript, Tailwind CSS, Bootstrap,
-                  JQuery
+                  Frontend: HTML, CSS, Javascript, React Native, Tailwind CSS,
+                  Bootstrap, JQuery
                 </li>
                 <li>
                   Backend: Java Spring Boot, PHP, Laravel, NestJS, Express js,
-                  Redis
+                  Redis, RESTful API, GraphQL
                 </li>
                 <li>Database: MySQL, PostgreSQL</li>
                 <li>Testing: Unit Testing, Katalon</li>
@@ -239,6 +189,8 @@ function App() {
                 <li>Mathematical Problem Solving</li>
                 <li>Critical Thinking & Analysis</li>
                 <li>Machine Learning</li>
+                <li>System Analysis</li>
+                <li>Project Management</li>
               </ul>
             </div>
           </div>
@@ -537,11 +489,13 @@ function App() {
           data-aos-duration="1000"
           data-aos-once="true"
         >
-          <div className="grid lg:grid-cols-2 gap-8 grid-cols-1">
+          <div className="w-full max-w-2xl mx-auto">
             {/* Contact Info */}
-            <div className="bg-zinc-800 p-6 sm:p-7 rounded-lg">
-              <h2 className="text-2xl font-bold mb-6">Let's Connect</h2>
-              <div className="space-y-4">
+            <div className="bg-zinc-800 p-6 sm:p-8 rounded-lg">
+              <h2 className="text-2xl font-bold mb-8 text-center">
+                Let's Connect
+              </h2>
+              <div className="space-y-5 max-w-md mx-auto">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
                     <i className="ri-mail-line text-blue-200 text-xl"></i>
@@ -608,117 +562,6 @@ function App() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Contact Form */}
-            <div className="bg-zinc-800 p-6 sm:p-7 rounded-lg">
-              <h2 className="text-2xl font-bold mb-6">Send a Message</h2>
-              <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-zinc-400 mb-1"
-                  >
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full bg-zinc-700 rounded-md border-0 p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                    placeholder="Enter your name"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-zinc-400 mb-1"
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full bg-zinc-700 rounded-md border-0 p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                    placeholder="Enter your email"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-zinc-400 mb-1"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows="4"
-                    className="w-full bg-zinc-700 rounded-md border-0 p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
-                    placeholder="What would you like to discuss?"
-                    required
-                  ></textarea>
-                </div>
-
-                {submitStatus === "success" && (
-                  <div className="p-3 bg-green-600/20 border border-green-500 rounded-md text-green-100 text-sm">
-                    Your message has been sent successfully!
-                  </div>
-                )}
-
-                {submitStatus === "error" && (
-                  <div className="p-3 bg-red-600/20 border border-red-500 rounded-md text-red-100 text-sm">
-                    Failed to send message. Please try again later.
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-md w-full transition-colors duration-300 flex items-center justify-center ${
-                    isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg
-                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    "Send Message"
-                  )}
-                </button>
-              </form>
             </div>
           </div>
         </div>
