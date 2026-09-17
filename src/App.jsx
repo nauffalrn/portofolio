@@ -1,9 +1,21 @@
 import { useState, useEffect } from "react";
-import DataImage from "./data";
-import { listProyek, listSertifikat, listExperience } from "./data";
 import ProfileCard from "./components/profile Card/profileCard";
+import {
+  fetchProfile,
+  fetchExperiences,
+  fetchProjects,
+  fetchCertificates,
+} from "./lib/api";
+import { isSupabaseConfigured } from "./lib/supabaseClient";
 
 function App() {
+  const [profile, setProfile] = useState(null);
+  const [experiences, setExperiences] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [certificates, setCertificates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+
   const [selectedSertifikat, setSelectedSertifikat] = useState(null);
   const [selectedProyek, setSelectedProyek] = useState(null);
   const [typedText, setTypedText] = useState("");
@@ -13,13 +25,38 @@ function App() {
   const [selectedExperiencePhoto, setSelectedExperiencePhoto] = useState(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
 
-  const texts = ["Backend Developer"];
-  const sortedProjects = [...listProyek].sort((a, b) => b.id - a.id);
-  const visibleProjects = showAllProjects
-    ? sortedProjects
-    : sortedProjects.slice(0, 6);
+  const visibleProjects = showAllProjects ? projects : projects.slice(0, 6);
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setLoadError(
+        "Supabase belum dikonfigurasi. Salin .env.example ke .env dan isi VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY."
+      );
+      setLoading(false);
+      return;
+    }
+
+    Promise.all([
+      fetchProfile(),
+      fetchExperiences(),
+      fetchProjects(),
+      fetchCertificates(),
+    ])
+      .then(([profileData, experienceData, projectData, certificateData]) => {
+        setProfile(profileData);
+        setExperiences(experienceData);
+        setProjects(projectData);
+        setCertificates(certificateData);
+      })
+      .catch((err) => setLoadError(err.message || "Gagal memuat data."))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const texts =
+    profile?.typed_texts?.length > 0 ? profile.typed_texts : ["Developer"];
+
+  useEffect(() => {
+    if (!profile) return;
     const typeSpeed = isDeleting ? 50 : 100;
     const pauseTime = 2000;
 
@@ -41,7 +78,8 @@ function App() {
     }, typeSpeed);
 
     return () => clearTimeout(timeout);
-  }, [currentCharIndex, isDeleting, currentTextIndex, texts]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentCharIndex, isDeleting, currentTextIndex, profile]);
 
   const openModal = (sertifikat) => {
     setSelectedSertifikat(sertifikat);
@@ -73,6 +111,22 @@ function App() {
     document.body.style.overflow = "unset";
   };
 
+  if (loadError) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center px-4">
+        <p className="text-red-400 text-center max-w-md">{loadError}</p>
+      </div>
+    );
+  }
+
+  if (loading || !profile) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center text-zinc-400">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Hero Section */}
@@ -82,7 +136,7 @@ function App() {
       >
         <div className="animate__animated animate__fadeInUp animate__delay-1s order-2 lg:order-1">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl/tight font-bold mb-6">
-            Hi, I'm Muhammad Nauffal Ramdhani
+            Hi, I'm {profile.name}
           </h1>
           <div className="mb-6 h-16 flex items-center">
             <span className="text-xl sm:text-2xl text-blue-200 font-semibold">
@@ -93,12 +147,12 @@ function App() {
         </div>
         <div className="flex justify-center lg:justify-end order-1 lg:order-2 lg:-ml-16 xl:-ml-24">
           <ProfileCard
-            name="M. Nauffal R."
-            title="Backend Developer"
-            handle="nauffal.rn"
-            status="Online"
-            contactText="Contact Me"
-            avatarUrl={DataImage.HeroImage}
+            name={profile.short_name}
+            title={profile.title}
+            handle={profile.handle}
+            status={profile.status}
+            contactText={profile.contact_button_text}
+            avatarUrl={profile.hero_image_url}
             showUserInfo={true}
             enableTilt={false}
             enableMobileTilt={false}
@@ -124,73 +178,55 @@ function App() {
           <div className="mb-8 flex flex-col sm:flex-row items-center gap-5">
             <div className="w-20 h-20 flex items-center justify-center bg-white p-2 rounded-lg flex-shrink-0">
               <img
-                src={DataImage.TelkomLogo}
-                alt="Telkom University"
+                src={profile.university_logo_url}
+                alt={profile.university_name}
                 className="max-w-full max-h-full"
                 loading="lazy"
               />
             </div>
             <div className="text-center sm:text-left">
-              <h2 className="text-xl font-bold mb-1">Telkom University</h2>
+              <h2 className="text-xl font-bold mb-1">
+                {profile.university_name}
+              </h2>
               <p className="text-sm text-blue-200 mb-1">
-                S1 Informatics / Computer Science
+                {profile.university_major}
               </p>
               <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4 flex-wrap">
-                <span className="bg-blue-900/40 text-blue-200 px-3 py-1 rounded-md text-xs font-medium">
-                  GPA 3.9/4.0
-                </span>
-                <span className="bg-blue-900/40 text-blue-200 px-3 py-1 rounded-md text-xs font-medium">
-                  Cum Laude
-                </span>
+                {(profile.badges || []).map((badge, index) => (
+                  <span
+                    key={index}
+                    className="bg-blue-900/40 text-blue-200 px-3 py-1 rounded-md text-xs font-medium"
+                  >
+                    {badge}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
 
           <div className="text-base/loose mb-8 text-center sm:text-left space-y-4">
-            <p>
-              I am an Informatics graduate from Telkom University with a strong
-              interest in Backend Development. I approach software development
-              by first understanding problems, analyzing requirements, and
-              choosing the most appropriate solutions before turning them into
-              reliable and efficient code.
-            </p>
-            <p>
-              I have experience working with databases, APIs, application logic,
-              and system design, with a strong focus on data security,
-              scalability, maintainability, readability, and reliability. I
-              apply principles such as SOLID, DRY, KISS, and YAGNI to build
-              clean, well-structured, and maintainable software. Beyond coding,
-              I enjoy solving problems, exploring different approaches, and
-              continuously learning to deliver high-quality software solutions.
-            </p>
+            {(profile.about_paragraphs || []).map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
           </div>
 
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-5">
             <div className="bg-zinc-700/50 p-4 rounded-lg">
-              <h3 className="font-bold text-blue-200 mb-2">Technical Skills</h3>
+              <h3 className="font-bold text-blue-200 mb-2">
+                Technical Skills
+              </h3>
               <ul className="list-disc pl-5 text-sm space-y-1">
-                <li>
-                  Frontend: HTML, CSS, Javascript, React Native, Tailwind CSS,
-                  Bootstrap, JQuery
-                </li>
-                <li>
-                  Backend: Java Spring Boot, PHP, Laravel, NestJS, Express js,
-                  Redis, RESTful API, GraphQL
-                </li>
-                <li>Database: MySQL, PostgreSQL</li>
-                <li>Testing: Unit Testing, Katalon</li>
-                <li>Version Control: Git, GitHub</li>
+                {(profile.technical_skills || []).map((skill, index) => (
+                  <li key={index}>{skill}</li>
+                ))}
               </ul>
             </div>
             <div className="bg-zinc-700/50 p-4 rounded-lg">
               <h3 className="font-bold text-blue-200 mb-2">Interests</h3>
               <ul className="list-disc pl-5 text-sm space-y-1">
-                <li>Web Development</li>
-                <li>Mathematical Problem Solving</li>
-                <li>Critical Thinking & Analysis</li>
-                <li>Machine Learning</li>
-                <li>System Analysis</li>
-                <li>Project Management</li>
+                {(profile.interests || []).map((interest, index) => (
+                  <li key={index}>{interest}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -208,19 +244,19 @@ function App() {
           Experience
         </h1>
         <div className="experience-box mt-14 grid md:grid-cols-2 grid-cols-1 gap-6 max-w-7xl mx-auto">
-          {listExperience.map((exp) => (
+          {experiences.map((exp, expIndex) => (
             <div
               key={exp.id}
               className="bg-zinc-800 rounded-lg p-6 hover:bg-zinc-700 transition-all duration-300 h-full"
               data-aos="fade-up"
               data-aos-duration="1000"
-              data-aos-delay={exp.dad}
+              data-aos-delay={expIndex * 100}
               data-aos-once="true"
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="w-16 h-16 flex-shrink-0 overflow-hidden rounded-lg">
                   <img
-                    src={exp.logo}
+                    src={exp.logo_url}
                     alt={exp.company}
                     className="w-full h-full object-contain block"
                     loading="lazy"
@@ -238,7 +274,7 @@ function App() {
                   <p className="text-sm text-zinc-400 mb-4">{exp.location}</p>
 
                   <ul className="list-disc list-inside space-y-2 mb-4 text-zinc-300 text-sm sm:text-base">
-                    {exp.description.map((desc, index) => (
+                    {(exp.description || []).map((desc, index) => (
                       <li key={index} className="leading-relaxed">
                         {desc}
                       </li>
@@ -246,7 +282,7 @@ function App() {
                   </ul>
 
                   <div className="flex flex-wrap gap-2 mb-6">
-                    {exp.skills.map((skill, index) => (
+                    {(exp.skills || []).map((skill, index) => (
                       <span
                         key={index}
                         className="py-1 px-3 bg-blue-900/40 text-blue-200 rounded-md text-xs sm:text-sm font-medium"
@@ -311,19 +347,19 @@ function App() {
           Project
         </h1>
         <div className="proyek-box mt-14 grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 max-w-7xl mx-auto">
-          {visibleProjects.map((proyek) => (
+          {visibleProjects.map((proyek, proyekIndex) => (
             <div
               key={proyek.id}
               className="bg-zinc-800 rounded-md hover:bg-zinc-700 transition-all duration-300 overflow-hidden hover:scale-105 cursor-pointer"
               data-aos="fade-up"
               data-aos-duration="1000"
-              data-aos-delay={proyek.dad}
+              data-aos-delay={proyekIndex * 100}
               data-aos-once="true"
               onClick={() => openProjectModal(proyek)}
             >
               <div className="w-full overflow-hidden group relative">
                 <img
-                  src={proyek.gambar}
+                  src={proyek.gambar_url}
                   alt={`${proyek.nama} Project Image`}
                   loading="lazy"
                   className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
@@ -339,7 +375,7 @@ function App() {
                   {proyek.nama}
                 </h2>
                 <div className="flex flex-wrap gap-2">
-                  {proyek.tools.map((tool, index) => (
+                  {(proyek.tools || []).map((tool, index) => (
                     <span
                       className="py-1 px-3 border border-zinc-500 bg-zinc-600 rounded-md font-semibold text-sm hover:bg-blue-600 hover:border-blue-600 transition-all"
                       key={index}
@@ -353,7 +389,7 @@ function App() {
           ))}
         </div>
 
-        {listProyek.length > 6 && (
+        {projects.length > 6 && (
           <div className="flex justify-center mt-10">
             <button
               onClick={() => setShowAllProjects((prev) => !prev)}
@@ -376,7 +412,7 @@ function App() {
           Achievement
         </h1>
         <div className="sertifikat-box mt-14 grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3 max-w-7xl mx-auto">
-          {listSertifikat.map((sertifikat) => (
+          {certificates.map((sertifikat) => (
             <div
               key={sertifikat.id}
               className="p-3 bg-zinc-800 rounded-md hover:bg-zinc-700 transition-colors cursor-pointer transform hover:scale-105 duration-300"
@@ -387,7 +423,7 @@ function App() {
             >
               <div className="w-full h-48 bg-white rounded-md mb-3 flex items-center justify-center overflow-hidden">
                 <img
-                  src={sertifikat.gambar}
+                  src={sertifikat.gambar_url}
                   alt={sertifikat.nama}
                   loading="lazy"
                   className="max-w-full max-h-full object-contain"
@@ -421,7 +457,7 @@ function App() {
                 </h2>
                 <div className="mb-4">
                   <img
-                    src={selectedProyek.gambar}
+                    src={selectedProyek.gambar_url}
                     alt={selectedProyek.nama}
                     className="w-full h-auto object-contain rounded-lg max-h-[60vh]"
                   />
@@ -432,7 +468,7 @@ function App() {
                     <span className="text-sm font-semibold text-zinc-300 mr-2">
                       Tech Stack:
                     </span>
-                    {selectedProyek.tools.map((tool, index) => (
+                    {(selectedProyek.tools || []).map((tool, index) => (
                       <span
                         key={index}
                         className="py-1 px-3 bg-blue-900/40 text-blue-200 rounded-md font-semibold text-sm border border-blue-700/40"
@@ -464,7 +500,7 @@ function App() {
                 {selectedSertifikat.nama}
               </h2>
               <img
-                src={selectedSertifikat.gambar}
+                src={selectedSertifikat.gambar_url}
                 alt={selectedSertifikat.nama}
                 className="w-full max-w-full h-auto object-contain rounded-lg bg-zinc-900 p-2"
               />
@@ -503,10 +539,10 @@ function App() {
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-zinc-400">Email</p>
                     <a
-                      href="mailto:m.nauffal.ramdhani@gmail.com"
+                      href={`mailto:${profile.contact_email}`}
                       className="hover:text-blue-200 transition-colors text-sm sm:text-base break-all"
                     >
-                      m.nauffal.ramdhani@gmail.com
+                      {profile.contact_email}
                     </a>
                   </div>
                 </div>
@@ -518,12 +554,12 @@ function App() {
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-zinc-400">LinkedIn</p>
                     <a
-                      href="http://www.linkedin.com/in/mnauffalr"
+                      href={profile.contact_linkedin}
                       className="hover:text-blue-200 transition-colors text-sm sm:text-base break-all"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      linkedin.com/in/mnauffalr
+                      {profile.contact_linkedin?.replace(/^https?:\/\//, "")}
                     </a>
                   </div>
                 </div>
@@ -535,12 +571,12 @@ function App() {
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-zinc-400">GitHub</p>
                     <a
-                      href="https://github.com/nauffalrn"
+                      href={profile.contact_github}
                       className="hover:text-blue-200 transition-colors text-sm sm:text-base break-all"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      github.com/nauffalrn
+                      {profile.contact_github?.replace(/^https?:\/\//, "")}
                     </a>
                   </div>
                 </div>
@@ -552,12 +588,12 @@ function App() {
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-zinc-400">Instagram</p>
                     <a
-                      href="https://www.instagram.com/nauffal.rn"
+                      href={profile.contact_instagram}
                       className="hover:text-blue-200 transition-colors text-sm sm:text-base"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      @nauffal.rn
+                      @{profile.contact_instagram?.split("/").filter(Boolean).pop()}
                     </a>
                   </div>
                 </div>

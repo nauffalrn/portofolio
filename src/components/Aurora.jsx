@@ -41,7 +41,7 @@ const Aurora = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Draw each aurora layer
-      auroraLayers.forEach((layer, index) => {
+      auroraLayers.forEach((layer) => {
         const color = colors[layer.colorIndex];
         
         // Create gradient

@@ -1,11 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
-import App from "./App.jsx";
-import Navbar from "./components/navbar.jsx";
-import Footer from "./components/footer.jsx";
-import PreLoader from "./components/PreLoader.jsx";
-import Aurora from "./components/Aurora.jsx";
+import PublicSite from "./PublicSite.jsx";
+import AdminLogin from "./pages/AdminLogin.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 import "remixicon/fonts/remixicon.css";
 import "animate.css";
 import AOS from "aos";
@@ -15,12 +16,21 @@ AOS.init();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Aurora />
-    <PreLoader />
-    <Navbar />
-    <div className="pt-24">
-      <App />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<PublicSite />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   </StrictMode>
 );
