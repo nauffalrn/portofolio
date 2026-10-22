@@ -28,6 +28,20 @@ All portfolio content (profile, experience, projects, achievements) is stored in
    SUPABASE_URL=https://xxxx.supabase.co SUPABASE_SERVICE_ROLE_KEY=your-service-role-key node scripts/seed.mjs
    ```
    If you skip this, the `profile` row still exists (empty) and you can fill everything in from `/admin` manually.
-6. **Deploy**: if hosting on Vercel or Netlify, add the same env vars in the hosting dashboard. `vercel.json` / `public/_redirects` are already set up so client-side routes like `/admin` don't 404 on refresh.
+6. **Deploy**: if hosting on Vercel or Netlify, add the same env vars in the hosting dashboard. `vercel.json` / `public/_redirects` route `/admin/*` to the admin app. Optionally set `SITE_URL` (defaults to `https://www.nauffal.my.id`), used for the canonical URL, Open Graph tags, `robots.txt` and `sitemap.xml`.
+7. **Auto-rebuild on content changes** (required, see below): in Vercel go to Project Settings > Git > Deploy Hooks and create a hook for your production branch. Then in Supabase go to Database > Webhooks > Create a new hook, select the `profile`, `experiences`, `projects` and `certificates` tables (Insert, Update, Delete), method `POST`, and paste the Vercel deploy hook URL. Keep that URL secret: anyone who has it can trigger builds.
 
 Once set up, log in at `/admin/login` and manage everything (including display order, via the ↑/↓ buttons on each list) from `/admin`.
+
+## How the public page is built (performance & SEO)
+
+The public page is a **statically generated** page, not a client-side fetch:
+
+1. `scripts/build-content.mjs` reads all content from Supabase at build time, downloads every image and converts it with `sharp` into responsive WebP sizes in `public/media/` (content-hashed file names, cached forever), and writes `src/generated/content.json`.
+2. `vite build` builds two apps: the public page (`index.html` → `src/entry-client.jsx`) and the admin panel (`admin.html` → `src/admin-main.jsx`). Supabase, React Router and drag-and-drop only ship with the admin panel.
+3. `scripts/prerender.mjs` renders the page to HTML, injects SEO tags (title, description, Open Graph, JSON-LD) and inlines the CSS, then writes `robots.txt` and `sitemap.xml`.
+4. In the browser the HTML is already complete; `react-dom` is loaded after the `load` event to hydrate the interactive parts (modals, mobile menu).
+
+Because content is baked in at build time, **edits made in `/admin` appear on the public site after the next deploy** — which the Supabase webhook from step 7 triggers automatically (usually 1–2 minutes).
+
+Local development: `npm run dev` runs `npm run content` first (needs `.env`). To build from a local file of raw rows instead of Supabase, set `CONTENT_FIXTURE=path/to/rows.json`.
