@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
+import ResponsiveImage from "../ResponsiveImage";
 import "./profileCard.css";
 
 const DEFAULT_INNER_GRADIENT =
@@ -18,9 +19,9 @@ const adjust = (v, fMin, fMax, tMin, tMax) =>
   round(tMin + ((tMax - tMin) * (v - fMin)) / (fMax - fMin));
 
 const ProfileCardComponent = ({
-  avatarUrl = "{DataImage.HeroImage}",
-  iconUrl = "{DataImage.HeroImage}",
-  grainUrl = "<Placeholder for grain URL>",
+  avatar,
+  iconUrl,
+  grainUrl,
   innerGradient,
   behindGlowEnabled = true,
   behindGlowColor,
@@ -29,14 +30,13 @@ const ProfileCardComponent = ({
   enableTilt = true,
   enableMobileTilt = false,
   mobileTiltSensitivity = 5,
-  miniAvatarUrl,
   name = "M. Nauffal R.",
   title = "Backend Developer",
   handle = "nauffal.rn",
   status = "Online",
   contactText = "Contact",
   showUserInfo = true,
-  onContactClick,
+  contactHref = "#contact",
 }) => {
   const wrapRef = useRef(null);
   const shellRef = useRef(null);
@@ -318,19 +318,6 @@ const ProfileCardComponent = ({
     [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize]
   );
 
-  const handleContactClick = useCallback(() => {
-    // Scroll ke section contact
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
-    // Atau bisa langsung update URL
-    window.location.hash = "contact";
-
-    // Tetap jalankan callback jika ada
-    onContactClick?.();
-  }, [onContactClick]);
-
   return (
     <div
       ref={wrapRef}
@@ -341,55 +328,44 @@ const ProfileCardComponent = ({
       <div ref={shellRef} className="pc-card-shell">
         <section className="pc-card">
           <div className="pc-inside">
-            <div className="pc-shine" />
+            {/* The holographic shine is masked by --icon; without an icon it
+                would be invisible, so skip it and its endless repaint animation. */}
+            {iconUrl && <div className="pc-shine" />}
             <div className="pc-glare" />
             <div className="pc-content pc-avatar-content">
-              <img
-                className="avatar"
-                src={avatarUrl}
+              {/* LCP element: loaded eagerly with high priority. */}
+              <ResponsiveImage
+                image={avatar}
                 alt={`${name || "User"} avatar`}
-                loading="lazy"
-                onError={(e) => {
-                  const t = e.target;
-                  t.style.display = "none";
-                }}
+                sizes="(max-width: 320px) 230px, (max-width: 480px) 273px, (max-width: 768px) 323px, 388px"
+                className="avatar"
+                priority
               />
               {showUserInfo && (
                 <div className="pc-user-info">
                   <div className="pc-user-details">
                     <div className="pc-mini-avatar">
-                      <img
-                        src={miniAvatarUrl || avatarUrl}
-                        alt={`${name || "User"} mini avatar`}
-                        loading="lazy"
-                        onError={(e) => {
-                          const t = e.target;
-                          t.style.opacity = "0.5";
-                          t.src = avatarUrl;
-                        }}
-                      />
+                      <ResponsiveImage image={avatar} alt="" sizes="48px" />
                     </div>
                     <div className="pc-user-text">
                       <div className="pc-handle">@{handle}</div>
                       <div className="pc-status">{status}</div>
                     </div>
                   </div>
-                  <button
+                  <a
                     className="pc-contact-btn"
-                    onClick={handleContactClick}
+                    href={contactHref}
                     style={{ pointerEvents: "auto" }}
-                    type="button"
-                    aria-label={`Contact ${name || "user"}`}
                   >
                     {contactText}
-                  </button>
+                  </a>
                 </div>
               )}
             </div>
             <div className="pc-content">
               <div className="pc-details">
-                <h3>{name}</h3>
-                <p>{title}</p>
+                <p className="pc-name">{name}</p>
+                <p className="pc-title">{title}</p>
               </div>
             </div>
           </div>

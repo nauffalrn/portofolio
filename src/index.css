@@ -1,7 +1,64 @@
 @import "tailwindcss";
 
+/* Self-hosted Poppins (latin subset only). Served from our origin with an
+   immutable cache, so no extra connection to Google Fonts on the critical path. */
+@import "@fontsource/poppins/latin-400.css";
+@import "@fontsource/poppins/latin-500.css";
+@import "@fontsource/poppins/latin-600.css";
+@import "@fontsource/poppins/latin-700.css";
+
+/* Arial tuned to Poppins' metrics. Text rendered before the web font arrives
+   takes the same space, so the font swap causes no layout shift (CLS). */
+@font-face {
+  font-family: "Poppins Fallback";
+  src: local("Arial");
+  ascent-override: 93.62%;
+  descent-override: 31.21%;
+  line-gap-override: 8.92%;
+  size-adjust: 112.16%;
+}
+
+@theme {
+  --font-sans: "Poppins", "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
+}
+
 @layer base {
-  body {
-    font-family: "Poppins", sans-serif;
+  /* Keep anchored sections clear of the fixed navbar. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
+/* Static replacement for the old animated <canvas> aurora: same colors,
+   zero JavaScript and no per-frame repaints. */
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 30% 35%, rgb(45 212 191 / 0.14), transparent 70%),
+    radial-gradient(55% 45% at 70% 55%, rgb(37 99 235 / 0.16), transparent 70%),
+    radial-gradient(70% 60% at 50% 80%, rgb(29 78 216 / 0.12), transparent 70%),
+    linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+}
+
+/* Fade-up on scroll, driven by CSS scroll timelines instead of a JS library.
+   Browsers without support (or users who prefer reduced motion) simply see the
+   content without animation. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
   }
 }

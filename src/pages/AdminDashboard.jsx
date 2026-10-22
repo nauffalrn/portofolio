@@ -22,7 +22,12 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-zinc-900 text-white">
       <header className="border-b border-zinc-800 px-6 py-4 flex items-center justify-between">
-        <h1 className="text-lg font-bold">Admin Dashboard</h1>
+        <div>
+          <h1 className="text-lg font-bold">Admin Dashboard</h1>
+          <p className="text-xs text-zinc-400">
+            Perubahan tampil di situs publik setelah rebuild otomatis (±1–2 menit).
+          </p>
+        </div>
         <div className="flex items-center gap-4">
           <Link
             to="/"
