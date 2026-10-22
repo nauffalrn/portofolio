@@ -16,7 +16,7 @@ const PublicSite = ({ content }) => {
   return (
     <>
       <div className="site-bg" aria-hidden="true" />
-      <Navbar brand="Portofolio" />
+      <Navbar brand="nauffalrn" />
       <main className="pt-24">
         <Hero profile={profile} />
         <About profile={profile} />

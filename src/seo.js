@@ -2,6 +2,7 @@
 // Runs at build time only (see src/entry-server.jsx).
 
 const DESCRIPTION_MAX = 155; // Google truncates snippets around here.
+const SITE_NAME = "nauffalrn";
 
 const escapeHtml = (value) =>
   String(value)
@@ -38,7 +39,7 @@ function buildPersonSchema(profile, siteUrl, imageUrl) {
 
 export function buildHead(profile, siteUrl) {
   const canonicalUrl = `${siteUrl.replace(/\/$/, "")}/`;
-  const title = `${profile.name} | ${profile.title}`;
+  const title = SITE_NAME;
   const description = truncate(
     profile.about_paragraphs?.[0] || `${profile.name} — ${profile.title}.`,
     DESCRIPTION_MAX
@@ -55,7 +56,7 @@ export function buildHead(profile, siteUrl) {
   const meta = [
     ["name", "description", description],
     ["property", "og:type", "profile"],
-    ["property", "og:site_name", profile.name],
+    ["property", "og:site_name", SITE_NAME],
     ["property", "og:title", title],
     ["property", "og:description", description],
     ["property", "og:url", canonicalUrl],
