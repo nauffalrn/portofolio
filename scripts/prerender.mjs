@@ -29,6 +29,19 @@ async function inlineStylesheets(html) {
   return html;
 }
 
+// Fonts used above the fold. Fonts referenced only from the (inlined) CSS are
+// discovered late, after the HTML is parsed; preloading them lets them arrive
+// before first paint, so the hero text never reflows on the font swap.
+const CRITICAL_FONTS = /\/assets\/(?:poppins-latin-(?:400|500|600|700)|jetbrains-mono-latin-400)-normal-[\w-]+\.woff2/g;
+
+function preloadFonts(html) {
+  const hrefs = [...new Set(html.match(CRITICAL_FONTS) || [])];
+  const links = hrefs
+    .map((href) => `<link rel="preload" as="font" type="font/woff2" crossorigin href="${href}">`)
+    .join("");
+  return html.replace("</title>", () => `</title>${links}`);
+}
+
 async function writeCrawlerFiles(siteUrl) {
   const homeUrl = `${siteUrl.replace(/\/$/, "")}/`;
   const today = new Date().toISOString().slice(0, 10);
@@ -59,11 +72,11 @@ async function main() {
   const templatePath = path.join(DIST, "index.html");
   const template = await readFile(templatePath, "utf8");
   // Function replacers: `$` in content must not be treated as a pattern.
-  const page = await inlineStylesheets(
+  const page = preloadFonts(await inlineStylesheets(
     template
       .replace("<!--app-head-->", () => head)
       .replace("<!--app-html-->", () => appHtml)
-  );
+  ));
 
   await writeFile(templatePath, page);
   await writeCrawlerFiles(SITE_URL);
