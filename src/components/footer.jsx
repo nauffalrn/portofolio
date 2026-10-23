@@ -1,43 +1,33 @@
 import Icon from "./Icon";
 import { getSocialLinks, isExternal } from "../lib/socialLinks";
+import { CONTAINER } from "../sections/Section";
 
-const Footer = ({ profile }) => {
+const Footer = ({ profile, brand }) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-32 py-8 border-t border-zinc-800 px-4">
-      <div className="container mx-auto">
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-center">
-          <div className="text-center md:text-left">
-            <p className="text-xl sm:text-2xl font-bold mb-2">{profile.name}</p>
-            <p className="text-zinc-400 text-sm sm:text-base">{profile.title}</p>
-          </div>
-
-          <div className="flex flex-col items-center md:items-end">
-            <div className="flex items-center gap-4 sm:gap-6 mb-4">
-              {getSocialLinks(profile).map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-zinc-400 hover:text-blue-200 transition-colors"
-                  aria-label={link.label}
-                  {...(isExternal(link.href) && {
-                    target: "_blank",
-                    rel: "noopener noreferrer",
-                  })}
-                >
-                  <Icon name={link.icon} className="w-6 h-6" />
-                </a>
-              ))}
-            </div>
-            <p
-              className="text-zinc-400 text-xs sm:text-sm text-center md:text-right"
-              suppressHydrationWarning
-            >
-              &copy; {currentYear} {profile.name}. All rights reserved.
-            </p>
-          </div>
-        </div>
+    <footer className="mt-8 border-t border-zinc-800">
+      <div className={`${CONTAINER} flex flex-col-reverse items-center justify-between gap-4 py-6 sm:flex-row`}>
+        <p className="font-mono text-sm text-zinc-400" suppressHydrationWarning>
+          &copy; {currentYear} {brand}
+        </p>
+        <ul className="flex items-center gap-1 sm:-mr-2.5">
+          {getSocialLinks(profile).map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                className="flex h-11 w-11 items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-accent"
+                aria-label={link.label}
+                {...(isExternal(link.href) && {
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                })}
+              >
+                <Icon name={link.icon} className="h-5 w-5" />
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

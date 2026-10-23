@@ -1,38 +1,49 @@
 import Icon from "../components/Icon";
 import { getSocialLinks, isExternal } from "../lib/socialLinks";
-import SectionTitle from "./SectionTitle";
+import Section from "./Section";
 
-const Contact = ({ profile }) => (
-  <section id="contact" className="contact mt-32 py-10 px-4">
-    <SectionTitle>Contact</SectionTitle>
-    <div className="reveal mt-14 xl:w-2/3 lg:w-3/4 w-full mx-auto">
-      <div className="w-full max-w-2xl mx-auto bg-zinc-800 p-6 sm:p-8 rounded-lg">
-        <h3 className="text-2xl font-bold mb-8 text-center">Let's Connect</h3>
-        <ul className="space-y-5 max-w-md mx-auto">
-          {getSocialLinks(profile).map((link) => (
-            <li key={link.label} className="flex items-center gap-4">
-              <span className="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0 text-blue-200">
-                <Icon name={link.icon} className="w-6 h-6" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-sm text-zinc-400">{link.label}</span>
-                <a
-                  href={link.href}
-                  className="hover:text-blue-200 transition-colors text-sm sm:text-base break-all"
-                  {...(isExternal(link.href) && {
-                    target: "_blank",
-                    rel: "noopener noreferrer",
-                  })}
-                >
-                  {link.text}
-                </a>
-              </span>
+const Contact = ({ profile }) => {
+  const links = getSocialLinks(profile).filter((link) => link.label !== "Email");
+
+  return (
+    <Section id="contact" title="Contact">
+      <div className="reveal grid grid-cols-1 gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+        <div className="min-w-0">
+          <p className="max-w-[48ch] text-lg/relaxed text-zinc-400">
+            The fastest way to reach me is email.
+          </p>
+          {profile.contact_email && (
+            <a
+              href={`mailto:${profile.contact_email}`}
+              className="mt-6 inline-block max-w-full py-1 text-xl font-semibold break-all text-white underline decoration-zinc-700 underline-offset-8 transition-colors hover:text-accent hover:decoration-accent sm:text-3xl"
+            >
+              {profile.contact_email}
+            </a>
+          )}
+        </div>
+
+        <ul className="border-t border-zinc-800">
+          {links.map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                className="group flex min-h-14 items-center gap-4 border-b border-zinc-800 py-3 transition-colors hover:text-accent"
+                {...(isExternal(link.href) && {
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                })}
+              >
+                <Icon name={link.icon} className="h-5 w-5 flex-shrink-0 text-zinc-400 group-hover:text-accent" />
+                <span className="w-24 flex-shrink-0 text-zinc-200">{link.label}</span>
+                <span className="min-w-0 flex-1 truncate font-mono text-sm text-zinc-400">{link.text}</span>
+                <Icon name="arrowUpRight" className="h-4 w-4 flex-shrink-0 text-zinc-600 group-hover:text-accent" />
+              </a>
             </li>
           ))}
         </ul>
       </div>
-    </div>
-  </section>
-);
+    </Section>
+  );
+};
 
 export default Contact;
