@@ -29,3 +29,6 @@ dist-ssr
 # Generated at build time by scripts/build-content.mjs
 src/generated
 public/media
+
+# Impeccable design critique archive (local only)
+.impeccable/
