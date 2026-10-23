@@ -3,23 +3,19 @@ import { getSocialLinks, isExternal } from "../lib/socialLinks";
 import Section from "./Section";
 
 const Contact = ({ profile }) => {
-  const links = getSocialLinks(profile).filter((link) => link.label !== "Email");
+  const links = getSocialLinks(profile);
 
   return (
     <Section id="contact" title="Contact">
       <div className="reveal grid grid-cols-1 gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
         <div className="min-w-0">
-          <p className="max-w-[48ch] text-lg/relaxed text-zinc-400">
-            The fastest way to reach me is email.
+          <p className="text-4xl font-bold tracking-tight text-balance text-white sm:text-5xl lg:text-6xl/[1.05]">
+            Let&apos;s build <span className="text-zinc-500">something together</span>
+            <span
+              aria-hidden="true"
+              className="cursor-blink ml-2 inline-block h-[0.12em] w-[0.55em] rounded-[2px] bg-accent-strong align-baseline"
+            />
           </p>
-          {profile.contact_email && (
-            <a
-              href={`mailto:${profile.contact_email}`}
-              className="mt-6 inline-block max-w-full py-1 text-xl font-semibold break-all text-white underline decoration-zinc-700 underline-offset-8 transition-colors hover:text-accent hover:decoration-accent sm:text-3xl"
-            >
-              {profile.contact_email}
-            </a>
-          )}
         </div>
 
         <ul className="border-t border-zinc-800">

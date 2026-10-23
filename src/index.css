@@ -180,3 +180,14 @@
   from { stroke-dashoffset: -17; }
   to { stroke-dashoffset: -117; }
 }
+
+/* Contact heading: the logo's green cursor bar, blinking like a terminal caret. */
+@media (prefers-reduced-motion: no-preference) {
+  .cursor-blink {
+    animation: cursor-blink 1.1s steps(1, end) infinite;
+  }
+}
+
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
