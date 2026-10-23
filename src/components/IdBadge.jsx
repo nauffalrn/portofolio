@@ -33,7 +33,7 @@ const IdBadge = ({ profile, current }) => (
         <ResponsiveImage
           image={profile.hero_image}
           alt={profile.name}
-          sizes="(min-width: 640px) 400px, 360px"
+          sizes="(min-width: 640px) 325px, 292px"
           className="absolute top-[-40%] left-1/2 h-[175%] w-auto max-w-none -translate-x-[56.5%]"
           priority
         />

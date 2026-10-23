@@ -31,7 +31,7 @@ const MEDIA_URL = "/media";
 
 // Candidate widths for srcset. The browser picks one based on the `sizes`
 // attribute and the device pixel ratio.
-const WIDTHS = [128, 320, 480, 640, 1024, 1600];
+const WIDTHS = [128, 320, 480, 560, 640, 1024, 1600];
 const WEBP_QUALITY = 75;
 
 async function loadRows() {
