@@ -2,68 +2,114 @@ import { useState } from "react";
 import Icon from "../components/Icon";
 import Modal from "../components/Modal";
 import ResponsiveImage from "../components/ResponsiveImage";
-import SectionTitle from "./SectionTitle";
+import Section from "./Section";
 
 const INITIAL_VISIBLE = 6;
+const VISIBLE_TOOLS = 4;
 
-const ProjectCard = ({ project, onSelect }) => (
-  <button
-    type="button"
-    className="reveal text-left bg-zinc-800 rounded-md hover:bg-zinc-700 transition duration-300 overflow-hidden hover:scale-105"
-    onClick={() => onSelect(project)}
-  >
-    <span className="block w-full overflow-hidden group relative">
-      <ResponsiveImage
-        image={project.image}
-        alt={`${project.nama} project screenshot`}
-        sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-        className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
-      />
-      <span className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-        <span className="bg-white/20 rounded-full p-3 text-white">
-          <Icon name="zoomIn" className="w-6 h-6" />
-        </span>
-      </span>
-    </span>
-    <span className="block p-4">
-      <span className="block text-xl sm:text-2xl font-bold my-4">{project.nama}</span>
-      <span className="flex flex-wrap gap-2">
-        {(project.tools || []).map((tool) => (
-          <span
-            key={tool}
-            className="py-1 px-3 border border-zinc-500 bg-zinc-600 rounded-md font-semibold text-sm"
+// Optional: only projects that are actually hosted have a live_url.
+const LiveLink = ({ project, className = "" }) =>
+  project.live_url ? (
+    <a
+      href={project.live_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${project.nama}: live site`}
+      className={`relative z-10 inline-flex min-h-11 items-center gap-1 font-mono text-sm text-zinc-300 hover:text-accent ${className}`}
+    >
+      Live
+      <Icon name="arrowUpRight" className="h-4 w-4" />
+    </a>
+  ) : null;
+
+// The title button is stretched over the whole card (after:inset-0), so the
+// card opens the details while the Live link above it stays clickable.
+const ProjectCard = ({ project, onSelect }) => {
+  const tools = project.tools || [];
+  const extraTools = tools.length - VISIBLE_TOOLS;
+
+  return (
+    <li className="reveal group relative flex flex-col overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/70 transition-colors hover:border-zinc-600 has-[button:focus-visible]:border-accent">
+      <div className="aspect-[16/10] overflow-hidden bg-zinc-800">
+        <ResponsiveImage
+          image={project.image}
+          alt=""
+          sizes="(min-width: 1152px) 360px, (min-width: 1024px) 31vw, (min-width: 640px) 47vw, 100vw"
+          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="text-lg font-semibold">
+          <button
+            type="button"
+            onClick={() => onSelect(project)}
+            className="text-left after:absolute after:inset-0 focus-visible:outline-none"
           >
-            {tool}
+            {project.nama}
+          </button>
+        </h3>
+        {project.desk && (
+          <p className="mt-2 line-clamp-3 text-sm/relaxed text-zinc-400">{project.desk}</p>
+        )}
+
+        {tools.length > 0 && (
+          <ul aria-label="Tech stack" className="mt-4 flex flex-wrap gap-1.5">
+            {tools.slice(0, VISIBLE_TOOLS).map((tool) => (
+              <li
+                key={tool}
+                className="rounded border border-zinc-800 px-2 py-1 font-mono text-xs text-zinc-400"
+              >
+                {tool}
+              </li>
+            ))}
+            {extraTools > 0 && (
+              <li className="px-1 py-1 font-mono text-xs text-zinc-400">+{extraTools}</li>
+            )}
+          </ul>
+        )}
+
+        <div className="mt-auto flex min-h-11 items-center justify-between gap-4 pt-4">
+          <LiveLink project={project} />
+          <span
+            aria-hidden="true"
+            className="ml-auto inline-flex items-center gap-1 text-sm text-zinc-400 transition-colors group-hover:text-accent"
+          >
+            Details
+            <Icon name="arrowRight" className="h-4 w-4" />
           </span>
-        ))}
-      </span>
-    </span>
-  </button>
-);
+        </div>
+      </div>
+    </li>
+  );
+};
 
 const Projects = ({ projects }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
   const visibleProjects = showAll ? projects : projects.slice(0, INITIAL_VISIBLE);
+  const hiddenCount = projects.length - INITIAL_VISIBLE;
 
   return (
-    <section id="project" className="proyek mt-32 py-10 px-4">
-      <SectionTitle>Project</SectionTitle>
-      <div className="proyek-box mt-14 grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 max-w-7xl mx-auto">
+    <Section id="project" title="Projects" aside={`${projects.length} total`}>
+      <ul id="project-list" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {visibleProjects.map((project) => (
           <ProjectCard key={project.id} project={project} onSelect={setSelectedProject} />
         ))}
-      </div>
+      </ul>
 
-      {projects.length > INITIAL_VISIBLE && (
-        <div className="flex justify-center mt-10">
+      {hiddenCount > 0 && (
+        <div className="mt-10 flex justify-center">
           <button
             type="button"
+            aria-expanded={showAll}
+            aria-controls="project-list"
             onClick={() => setShowAll((prev) => !prev)}
-            className="bg-zinc-700 hover:bg-zinc-600 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-300"
+            className="inline-flex min-h-11 items-center gap-2 rounded-md px-5 font-semibold text-zinc-100 ring-1 ring-zinc-700 transition-colors hover:bg-zinc-800"
           >
-            {showAll ? "Show Less" : "More Projects"}
+            {showAll ? "Show fewer projects" : `Show ${hiddenCount} more projects`}
+            <Icon name="chevronDown" className={`h-5 w-5 transition-transform ${showAll ? "rotate-180" : ""}`} />
           </button>
         </div>
       )}
@@ -72,36 +118,36 @@ const Projects = ({ projects }) => {
         <Modal
           label={selectedProject.nama}
           onClose={() => setSelectedProject(null)}
-          className="max-w-6xl bg-zinc-800 rounded-lg border border-zinc-700"
+          className="max-w-5xl rounded-lg border border-zinc-800 bg-zinc-900"
         >
-          <div className="p-4 sm:p-6">
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 pr-16">
-              {selectedProject.nama}
-            </h3>
+          <div className="p-5 sm:p-8">
+            <h3 className="mb-5 pr-14 text-2xl font-bold">{selectedProject.nama}</h3>
             <ResponsiveImage
               image={selectedProject.image}
-              alt={selectedProject.nama}
-              sizes="(min-width: 1152px) 1104px, 100vw"
-              className="w-full h-auto object-contain rounded-lg max-h-[60vh] mb-4"
+              alt={`${selectedProject.nama} screenshot`}
+              sizes="(min-width: 1024px) 960px, 100vw"
+              className="mb-6 h-auto max-h-[60vh] w-full rounded-md object-contain"
             />
-            <div className="text-zinc-200">
-              <p className="mb-4 leading-relaxed">{selectedProject.desk}</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-sm font-semibold text-zinc-300 mr-2">Tech Stack:</span>
-                {(selectedProject.tools || []).map((tool) => (
-                  <span
+            {selectedProject.desk && (
+              <p className="mb-6 max-w-[70ch] leading-relaxed text-zinc-300">{selectedProject.desk}</p>
+            )}
+            {(selectedProject.tools || []).length > 0 && (
+              <ul aria-label="Tech stack" className="flex flex-wrap gap-1.5">
+                {selectedProject.tools.map((tool) => (
+                  <li
                     key={tool}
-                    className="py-1 px-3 bg-blue-900/40 text-blue-200 rounded-md font-semibold text-sm border border-blue-700/40"
+                    className="rounded border border-zinc-700 px-2 py-1 font-mono text-xs text-zinc-300"
                   >
                     {tool}
-                  </span>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+            )}
+            <LiveLink project={selectedProject} className="mt-4" />
           </div>
         </Modal>
       )}
-    </section>
+    </Section>
   );
 };
 
