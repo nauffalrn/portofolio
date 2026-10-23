@@ -33,7 +33,7 @@ const ProfileCardComponent = ({
   name = "M. Nauffal R.",
   title = "Backend Developer",
   handle = "nauffal.rn",
-  status = "Online",
+  status = "",
   contactText = "Contact",
   showUserInfo = true,
   contactHref = "#contact",
@@ -349,7 +349,7 @@ const ProfileCardComponent = ({
                     </div>
                     <div className="pc-user-text">
                       <div className="pc-handle">@{handle}</div>
-                      <div className="pc-status">{status}</div>
+                      {status && <div className="pc-status">{status}</div>}
                     </div>
                   </div>
                   <a

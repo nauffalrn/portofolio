@@ -451,12 +451,12 @@
   }
 
   .pc-status {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .pc-contact-btn {
-    padding: 6px 12px;
-    font-size: 11px;
+    padding: 8px 14px;
+    font-size: 12px;
   }
 }
 
@@ -498,12 +498,12 @@
   }
 
   .pc-status {
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .pc-contact-btn {
-    padding: 5px 10px;
-    font-size: 10px;
+    padding: 8px 14px;
+    font-size: 12px;
     border-radius: 50px;
   }
 }
@@ -540,12 +540,12 @@
   }
 
   .pc-status {
-    font-size: 8px;
+    font-size: 12px;
   }
 
   .pc-contact-btn {
-    padding: 4px 8px;
-    font-size: 9px;
+    padding: 8px 12px;
+    font-size: 12px;
     border-radius: 50px;
   }
 }
