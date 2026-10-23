@@ -140,11 +140,12 @@ const Navbar = ({ brand }) => {
             raised ? "bg-zinc-900/95" : "bg-zinc-900/75"
           }`}
         >
-          {/* Green hairline along the top edge, echoing the logo's cursor bar. */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-12 -top-px h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent"
-          />
+          {/* Green glint travelling around the border, echoing the logo's cursor bar. */}
+          <svg aria-hidden="true" className="nav-ring" width="100%" height="100%">
+            <rect className="nav-ring-tail" width="100%" height="100%" rx="29" pathLength="100" />
+            <rect className="nav-ring-mid" width="100%" height="100%" rx="29" pathLength="100" />
+            <rect className="nav-ring-head" width="100%" height="100%" rx="29" pathLength="100" />
+          </svg>
           {/* Wordmark echoes the logo: the name followed by a green cursor bar. */}
           <a href="#home" className="inline-flex items-baseline text-lg font-bold tracking-tight text-white sm:text-xl">
             {brand}

@@ -117,3 +117,66 @@
   100% { transform: rotate(0); }
 }
 
+/* Navbar: a green glint that travels around the pill's border at an even speed.
+   Two dashes on an SVG rect share the perimeter: a long dim tail and a short
+   bright head at its leading end. pathLength=100 makes the dash units percent. */
+.nav-ring {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  overflow: visible;
+  pointer-events: none;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.nav-ring-tail {
+  stroke: rgb(74 222 128 / 0.2);
+  stroke-width: 1;
+  stroke-dasharray: 22 78;
+  stroke-dashoffset: -30;
+}
+
+.nav-ring-mid {
+  stroke: rgb(74 222 128 / 0.5);
+  stroke-width: 1.25;
+  stroke-dasharray: 12 88;
+  stroke-dashoffset: -40;
+}
+
+.nav-ring-head {
+  stroke: rgb(74 222 128 / 0.95);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 95;
+  stroke-dashoffset: -47;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-ring-tail {
+    animation: nav-ring-tail 9s linear infinite;
+  }
+
+  .nav-ring-mid {
+    animation: nav-ring-mid 9s linear infinite;
+  }
+
+  .nav-ring-head {
+    animation: nav-ring-head 9s linear infinite;
+  }
+}
+
+@keyframes nav-ring-tail {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
+
+@keyframes nav-ring-mid {
+  from { stroke-dashoffset: -10; }
+  to { stroke-dashoffset: -110; }
+}
+
+@keyframes nav-ring-head {
+  from { stroke-dashoffset: -17; }
+  to { stroke-dashoffset: -117; }
+}
