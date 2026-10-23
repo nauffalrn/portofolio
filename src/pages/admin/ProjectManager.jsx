@@ -10,7 +10,13 @@ import ImageInput from "./ImageInput";
 import ListInput from "./ListInput";
 import SortableList from "./SortableList";
 
-const emptyForm = { nama: "", gambar_url: "", desk: "", tools: [] };
+const emptyForm = {
+  nama: "",
+  gambar_url: "",
+  desk: "",
+  tools: [],
+  live_url: "",
+};
 
 const ProjectManager = () => {
   const [items, setItems] = useState([]);
@@ -31,6 +37,7 @@ const ProjectManager = () => {
       gambar_url: item.gambar_url,
       desk: item.desk,
       tools: item.tools || [],
+      live_url: item.live_url || "",
     });
   };
 
@@ -106,6 +113,18 @@ const ProjectManager = () => {
             onChange={(tools) => setForm({ ...form, tools })}
             placeholder="React"
           />
+          <div className="mb-4">
+            <label className="block text-sm text-zinc-300 mb-1">
+              Link live / demo (opsional, kosongkan kalau tidak di-hosting)
+            </label>
+            <input
+              type="url"
+              value={form.live_url}
+              onChange={(e) => setForm({ ...form, live_url: e.target.value })}
+              placeholder="https://..."
+              className="w-full px-3 py-2 rounded-md bg-zinc-700 text-white outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
           <div className="flex gap-3">
             <button
               type="submit"

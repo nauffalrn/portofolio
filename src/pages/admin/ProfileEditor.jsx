@@ -75,14 +75,6 @@ const ProfileEditor = () => {
           />
         </div>
         <div>
-          <label className="block text-sm text-zinc-300 mb-1">Status</label>
-          <input
-            value={profile.status}
-            onChange={handleChange("status")}
-            className="w-full px-3 py-2 rounded-md bg-zinc-700 text-white outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div>
           <label className="block text-sm text-zinc-300 mb-1">
             Teks tombol contact
           </label>
@@ -93,13 +85,6 @@ const ProfileEditor = () => {
           />
         </div>
       </div>
-
-      <ListInput
-        label="Teks berjalan (typing effect)"
-        items={profile.typed_texts || []}
-        onChange={set("typed_texts")}
-        placeholder="Backend Developer"
-      />
 
       <ImageInput
         label="Foto hero"

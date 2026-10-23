@@ -9,7 +9,7 @@ import {
 import ImageInput from "./ImageInput";
 import SortableList from "./SortableList";
 
-const emptyForm = { nama: "", gambar_url: "" };
+const emptyForm = { nama: "", gambar_url: "", is_highlight: false };
 
 const CertificateManager = () => {
   const [items, setItems] = useState([]);
@@ -25,7 +25,11 @@ const CertificateManager = () => {
 
   const startEdit = (item) => {
     setEditingId(item.id);
-    setForm({ nama: item.nama, gambar_url: item.gambar_url });
+    setForm({
+      nama: item.nama,
+      gambar_url: item.gambar_url,
+      is_highlight: Boolean(item.is_highlight),
+    });
   };
 
   const cancelEdit = () => {
@@ -83,6 +87,20 @@ const CertificateManager = () => {
             onChange={(url) => setForm({ ...form, gambar_url: url })}
             folder="certificates"
           />
+          <label className="mb-4 flex items-start gap-2 text-sm text-zinc-300">
+            <input
+              type="checkbox"
+              checked={form.is_highlight}
+              onChange={(e) =>
+                setForm({ ...form, is_highlight: e.target.checked })
+              }
+              className="mt-0.5 h-4 w-4 accent-blue-600"
+            />
+            <span>
+              Highlight (tampil besar di atas, untuk penghargaan/kompetisi
+              utama)
+            </span>
+          </label>
           <div className="flex gap-3">
             <button
               type="submit"
@@ -122,6 +140,11 @@ const CertificateManager = () => {
                 <span className="flex-1 text-sm text-white truncate">
                   {item.nama}
                 </span>
+                {item.is_highlight && (
+                  <span className="px-2 py-0.5 rounded bg-green-900/50 text-green-300 text-xs">
+                    Highlight
+                  </span>
+                )}
                 <div className="flex gap-1">
                   <button
                     onClick={() => startEdit(item)}
