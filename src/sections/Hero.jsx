@@ -1,5 +1,5 @@
 import Icon from "../components/Icon";
-import ProfileCard from "../components/profile Card/profileCard";
+import IdBadge from "../components/IdBadge";
 import { CONTAINER } from "./Section";
 
 const isCurrent = (exp) => /present/i.test(exp.duration || "");
@@ -66,16 +66,8 @@ const Hero = ({ profile, experiences }) => {
         </div>
       </div>
 
-      <div className="flex justify-center lg:justify-end">
-        <ProfileCard
-          name={profile.short_name}
-          title={profile.title}
-          handle={profile.handle}
-          contactText={profile.contact_button_text}
-          avatar={profile.hero_image}
-          contactHref="#contact"
-          enableTilt={false}
-        />
+      <div className="flex justify-center lg:justify-end lg:pr-10">
+        <IdBadge profile={profile} current={current} />
       </div>
     </section>
   );

@@ -82,3 +82,38 @@
     transform: translateY(2rem);
   }
 }
+
+/* Hero ID badge: swings into place once from the lanyard clip, then tilts on hover. */
+.id-badge {
+  transform-origin: 50% 0;
+}
+
+/* Photo backdrop: fine guilloché rings rising behind the subject (like the security
+   print on a real ID card) over hairline diagonals and a soft studio gradient. */
+.badge-photo {
+  background:
+    repeating-radial-gradient(circle at 50% 118%, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(135deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 5px),
+    linear-gradient(to bottom, rgb(74 222 128 / 0.06), transparent 45%),
+    linear-gradient(to bottom, #3f3f46, #27272a 60%, #1f1f23);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .id-badge {
+    animation: badge-swing 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .id-badge:hover {
+    transform: rotate(-2.5deg);
+  }
+}
+
+@keyframes badge-swing {
+  0% { transform: rotate(7deg); }
+  30% { transform: rotate(-4deg); }
+  55% { transform: rotate(2deg); }
+  78% { transform: rotate(-0.8deg); }
+  100% { transform: rotate(0); }
+}
+
