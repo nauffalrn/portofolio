@@ -49,6 +49,7 @@ create table if not exists projects (
   gambar_url text default '',
   desk text default '',
   tools jsonb not null default '[]',
+  live_url text not null default '',
   order_index int not null default 0,
   created_at timestamptz not null default now()
 );
@@ -58,6 +59,7 @@ create table if not exists certificates (
   id uuid primary key default gen_random_uuid(),
   nama text not null default '',
   gambar_url text default '',
+  is_highlight boolean not null default false,
   order_index int not null default 0,
   created_at timestamptz not null default now()
 );
