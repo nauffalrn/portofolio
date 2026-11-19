@@ -129,7 +129,7 @@ const Projects = ({ projects }) => {
               className="mb-6 h-auto max-h-[60vh] w-full rounded-md object-contain"
             />
             {selectedProject.desk && (
-              <p className="mb-6 max-w-[70ch] leading-relaxed text-zinc-300">{selectedProject.desk}</p>
+              <p className="mb-6 leading-relaxed text-zinc-300">{selectedProject.desk}</p>
             )}
             {(selectedProject.tools || []).length > 0 && (
               <ul aria-label="Tech stack" className="flex flex-wrap gap-1.5">
